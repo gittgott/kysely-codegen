@@ -23,13 +23,13 @@ export const testCli = () => {
     typeOnlyImports: true,
     url: DEFAULT_URL,
     verify: false,
+    overrides: undefined,
   };
 
   void describe('cli', () => {
     void it('should parse options correctly', () => {
       const assert = (args: string[], expectedOptions: Partial<CliOptions>) => {
         const cliOptions = cli.parseOptions(args, { silent: true });
-
         deepStrictEqual(cliOptions, {
           ...DEFAULT_CLI_OPTIONS,
           ...expectedOptions,
@@ -56,6 +56,10 @@ export const testCli = () => {
       assert(['--verify'], { verify: true });
       assert(['--verify=true'], { verify: true });
       assert(['--verify=false'], { verify: false });
+      assert(
+        [`--overrides={"columns":{"table.override":"{ test: string }"}}`],
+        { overrides: { columns: { 'table.override': '{ test: string }' } } },
+      );
     });
   });
 };
