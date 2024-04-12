@@ -80,4 +80,8 @@ export const FLAGS: Flag[] = [
       'Verify that the generated types are up-to-date. (default: false)',
     longName: 'verify',
   },
+  {
+    description: `Allows overriding of columns to be a type-safe JSON column. e.g. {"columns":{"table.override":"{ test: string }"}}`,
+    longName: 'overrides',
+  },
 ];

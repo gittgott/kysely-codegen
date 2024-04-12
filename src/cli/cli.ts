@@ -15,6 +15,7 @@ import {
   VALID_DIALECTS,
 } from './constants';
 import { FLAGS } from './flags';
+import type { Overrides } from '../transformer';
 
 export type CliOptions = {
   camelCase?: boolean;
@@ -31,6 +32,7 @@ export type CliOptions = {
   typeOnlyImports?: boolean;
   url: string;
   verify?: boolean | undefined;
+  overrides?: Overrides;
 };
 
 export type LogLevelName = (typeof LOG_LEVEL_NAMES)[number];
@@ -48,7 +50,6 @@ export class Cli {
     const runtimeEnums = options.runtimeEnums;
     const schema = options.schema;
     const typeOnlyImports = options.typeOnlyImports;
-
     const logger = new Logger(options.logLevel);
 
     const connectionStringParser = new ConnectionStringParser();
@@ -93,6 +94,7 @@ export class Cli {
       schema,
       typeOnlyImports,
       verify: options.verify,
+      overrides: options.overrides
     });
 
     await db.destroy();
@@ -174,6 +176,7 @@ export class Cli {
     );
     const url = (argv.url as string) ?? DEFAULT_URL;
     const verify = this.#parseBoolean(argv.verify ?? false);
+    const overrides = argv.overrides ? JSON.parse(argv.overrides) : undefined;
 
     try {
       for (const key in argv) {
@@ -243,6 +246,7 @@ export class Cli {
       typeOnlyImports,
       url,
       verify,
+      overrides,
     };
   }
 
